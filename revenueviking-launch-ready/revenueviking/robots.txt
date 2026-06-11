@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+# Templates & not-yet-launched pages (noindex)
+Disallow: /thank-you.html
+Disallow: /roadmap.html
+Disallow: /local/
+Disallow: /blog/article-template.html
+
+Sitemap: https://revenueviking.com/sitemap.xml
