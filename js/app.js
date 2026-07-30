@@ -13,6 +13,7 @@ window.addEventListener('scroll', () => {
 
 hamburger?.addEventListener('click', () => {
   mobileNav?.classList.toggle('open');
+  hamburger.setAttribute('aria-expanded', mobileNav?.classList.contains('open') ? 'true' : 'false');
   const bars = hamburger.querySelectorAll('span');
   if (mobileNav?.classList.contains('open')) {
     bars[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
@@ -27,6 +28,7 @@ hamburger?.addEventListener('click', () => {
 mobileNav?.querySelectorAll('a').forEach(a => {
   a.addEventListener('click', () => {
     mobileNav.classList.remove('open');
+    hamburger?.setAttribute('aria-expanded', 'false');
     hamburger?.querySelectorAll('span').forEach(b => { b.style.transform = ''; b.style.opacity = ''; });
   });
 });
@@ -175,20 +177,21 @@ function handleFormSubmit(e, redirectUrl) {
     return;
   }
 
-  const btn = form.querySelector('[type=submit]');
-  const originalText = btn.textContent;
-  btn.textContent = 'Sending...';
-  btn.disabled = true;
-
-  // TODO: Replace with real Supabase/API POST. Example:
-  // await fetch('/api/lead', { method:'POST', body: new FormData(form) });
-  setTimeout(() => {
-    btn.textContent = '✓ Sent!';
-    setTimeout(() => {
-      if (redirectUrl) window.location.href = redirectUrl;
-      else { btn.textContent = originalText; btn.disabled = false; form.reset(); showNotif('✅ Message sent! We\'ll be in touch within 24 hours.'); }
-    }, 800);
-  }, 1200);
+  const details = Array.from(form.querySelectorAll('input:not([name="company_website_hp"]), select, textarea'))
+    .filter(field => field.value.trim())
+    .map(field => {
+      const label = field.closest('.form-group')?.querySelector('label')?.textContent.replace('*', '').trim()
+        || field.placeholder || 'Detail';
+      return `${label}: ${field.value.trim()}`;
+    });
+  const message = [
+    'Hi RevenueViking — I would like a free AI revenue systems demo.',
+    '',
+    ...details,
+    '',
+    `Page: ${window.location.href}`
+  ].join('\n');
+  window.open(`https://wa.me/18602687732?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
 }
 
 // Clear errors as user types
@@ -202,6 +205,18 @@ document.querySelectorAll('.contact-form').forEach(form => {
 
 document.querySelectorAll('.demo-form').forEach(form => {
   form.addEventListener('submit', (e) => handleFormSubmit(e, 'thank-you.html'));
+});
+
+// ── WHATSAPP CONVERSION CTA ─────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  const link = document.createElement('a');
+  link.className = 'whatsapp-float';
+  link.href = 'https://wa.me/18602687732?text=' + encodeURIComponent('Hi RevenueViking — I want to turn more missed calls into booked jobs. Can we talk?');
+  link.target = '_blank';
+  link.rel = 'noopener noreferrer';
+  link.setAttribute('aria-label', 'Chat with RevenueViking on WhatsApp');
+  link.innerHTML = '<span aria-hidden="true">◉</span><strong>WhatsApp</strong>';
+  document.body.appendChild(link);
 });
 
 // ── NOTIFICATION ─────────────────────────────────────────────
