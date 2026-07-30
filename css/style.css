@@ -410,12 +410,15 @@ h1,h2,h3,h4,h5 { font-family:var(--ff-display); line-height:1.1; letter-spacing:
   padding: 18px 24px;
   margin-bottom: 60px;
 }
+.revenue-counter > div:first-child {
+  min-width: 350px;
+}
 .rc-label {
   font-size: 0.72rem;
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.12em;
-  color: var(--mist);
+  color: var(--ice);
   line-height: 1.4;
 }
 .rc-amount {
@@ -428,9 +431,11 @@ h1,h2,h3,h4,h5 { font-family:var(--ff-display); line-height:1.1; letter-spacing:
   min-width: 180px;
 }
 .rc-industry {
-  font-size: 0.72rem;
-  color: var(--fog);
-  margin-top: 2px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--mist);
+  margin-top: 5px;
+  line-height: 1.45;
 }
 
 /* Hero trust badges */
@@ -1266,6 +1271,8 @@ footer {
   .eyebrow { justify-content: center; }
   .hero-proof { justify-content: center; }
   .revenue-counter { flex-direction: column; gap: 10px; }
+  .revenue-counter > div:first-child { min-width: 0; }
+  .rc-label, .rc-industry { text-align: center; }
   .rc-amount { font-size: 1.8rem; }
 }
 
