@@ -33,6 +33,35 @@ mobileNav?.querySelectorAll('a').forEach(a => {
   });
 });
 
+// ── DEFERRED HERO VIDEO ─────────────────────────────────────
+// Mobile and reduced-motion visitors keep the lightweight poster frame.
+function initHeroVideo() {
+  const video = document.querySelector('.hero-video');
+  if (!video) return;
+
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const desktopViewport = window.matchMedia('(min-width: 769px)');
+  if (reducedMotion.matches || !desktopViewport.matches) return;
+
+  const loadVideo = () => {
+    video.querySelectorAll('source[data-src]').forEach(source => {
+      source.src = source.dataset.src;
+      source.removeAttribute('data-src');
+    });
+    video.load();
+    video.play().catch(() => {
+      // Autoplay can be restricted by browser policy; the poster remains visible.
+    });
+  };
+
+  if ('requestIdleCallback' in window) {
+    window.requestIdleCallback(loadVideo, { timeout: 1400 });
+  } else {
+    window.setTimeout(loadVideo, 600);
+  }
+}
+window.addEventListener('DOMContentLoaded', initHeroVideo);
+
 // ── SCROLL REVEAL ────────────────────────────────────────────
 const revealEls = document.querySelectorAll('.reveal');
 const revealObs = new IntersectionObserver((entries) => {
@@ -51,56 +80,6 @@ window.addEventListener('scroll', () => {
   let cur = '';
   sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) cur = s.id; });
   navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + cur));
-});
-
-// ── REVENUE COUNTER (signature element) ──────────────────────
-const industries = [
-  { name: 'HVAC Companies',      missedPerDay: 8,  avgJob: 380 },
-  { name: 'Plumbing Companies',  missedPerDay: 6,  avgJob: 310 },
-  { name: 'Roofing Contractors', missedPerDay: 5,  avgJob: 850 },
-  { name: 'Electricians',        missedPerDay: 7,  avgJob: 295 },
-  { name: 'Landscapers',         missedPerDay: 4,  avgJob: 220 },
-  { name: 'Cleaning Services',   missedPerDay: 5,  avgJob: 180 },
-];
-
-let industryIndex = 0;
-let counterValue = 0;
-let counterTarget = 0;
-let counterInterval;
-
-function setIndustry(idx) {
-  const ind = industries[idx];
-  counterTarget = ind.missedPerDay * ind.avgJob * 30; // monthly loss
-  const indEl = document.getElementById('rc-industry');
-  if (indEl) indEl.textContent = ind.name + ' — estimated monthly loss from missed calls';
-}
-
-function animateCounter() {
-  clearInterval(counterInterval);
-  counterInterval = setInterval(() => {
-    const diff = counterTarget - counterValue;
-    const step = Math.max(1, Math.floor(Math.abs(diff) / 20));
-    counterValue += diff > 0 ? step : -step;
-    if (Math.abs(counterValue - counterTarget) < step) counterValue = counterTarget;
-    const el = document.getElementById('rc-amount');
-    if (el) el.textContent = '$' + counterValue.toLocaleString();
-    if (counterValue === counterTarget) clearInterval(counterInterval);
-  }, 16);
-}
-
-function cycleIndustry() {
-  setIndustry(industryIndex);
-  animateCounter();
-  industryIndex = (industryIndex + 1) % industries.length;
-}
-
-// Start cycling after page load
-window.addEventListener('load', () => {
-  setIndustry(0);
-  counterValue = 0;
-  animateCounter();
-  industryIndex = 1;
-  setInterval(cycleIndustry, 3500);
 });
 
 // ── FAQ ──────────────────────────────────────────────────────
@@ -136,7 +115,7 @@ function clearFieldError(input) {
   if (existing) existing.remove();
 }
 
-function handleFormSubmit(e, redirectUrl) {
+function handleFormSubmit(e) {
   e.preventDefault();
   const form = e.target;
 
@@ -185,7 +164,7 @@ function handleFormSubmit(e, redirectUrl) {
       return `${label}: ${field.value.trim()}`;
     });
   const message = [
-    'Hi RevenueViking — I would like a free AI revenue systems demo.',
+    'Hi RevenueViking — I would like to learn about the AI receptionist and lead-capture service.',
     '',
     ...details,
     '',
@@ -200,18 +179,18 @@ document.addEventListener('input', (e) => {
 });
 
 document.querySelectorAll('.contact-form').forEach(form => {
-  form.addEventListener('submit', (e) => handleFormSubmit(e, 'thank-you.html'));
+  form.addEventListener('submit', (e) => handleFormSubmit(e));
 });
 
 document.querySelectorAll('.demo-form').forEach(form => {
-  form.addEventListener('submit', (e) => handleFormSubmit(e, 'thank-you.html'));
+  form.addEventListener('submit', (e) => handleFormSubmit(e));
 });
 
 // ── WHATSAPP CONVERSION CTA ─────────────────────────────────
 window.addEventListener('DOMContentLoaded', () => {
   const link = document.createElement('a');
   link.className = 'whatsapp-float';
-  link.href = 'https://wa.me/18602687732?text=' + encodeURIComponent('Hi RevenueViking — I want to turn more missed calls into booked jobs. Can we talk?');
+  link.href = 'https://wa.me/18602687732?text=' + encodeURIComponent('Hi RevenueViking — I would like to learn about the AI receptionist for my service business. Can we talk?');
   link.target = '_blank';
   link.rel = 'noopener noreferrer';
   link.setAttribute('aria-label', 'Chat with RevenueViking on WhatsApp');
@@ -262,25 +241,25 @@ window.addEventListener('DOMContentLoaded', initCookieBanner);
 document.querySelectorAll('a[href^="#"]').forEach(a => {
   a.addEventListener('click', e => {
     const target = document.querySelector(a.getAttribute('href'));
-    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    if (target) { e.preventDefault(); target.scrollIntoView({ behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' }); }
   });
 });
 
-// ── REVENUE LOSS CALCULATOR ──────────────────────────────────
+// ── MISSED-CALL OPPORTUNITY CALCULATOR ──────────────────────
 function runCalc() {
-  const calls  = parseFloat(document.getElementById('calc-calls')?.value)  || 0;
-  const missed = parseFloat(document.getElementById('calc-missed')?.value) || 0;
-  const value  = parseFloat(document.getElementById('calc-value')?.value)  || 0;
+  const calls = Math.max(0, parseFloat(document.getElementById('calc-calls')?.value) || 0);
+  const missed = Math.max(0, parseFloat(document.getElementById('calc-missed')?.value) || 0);
+  const conversion = Math.min(100, Math.max(0, parseFloat(document.getElementById('calc-conversion')?.value) || 0));
+  const value = Math.max(0, parseFloat(document.getElementById('calc-value')?.value) || 0);
   const cappedMissed = Math.min(missed, calls);
-  const jobsLost = cappedMissed / 3;           // ~1 in 3 calls becomes a job
-  const lost = Math.round(jobsLost * value);
-  const recover = Math.round(lost * 0.7);      // conservative 70% recovery
-  const lostEl = document.getElementById('calc-lost');
-  const recEl  = document.getElementById('calc-recover');
-  const subEl  = document.getElementById('calc-lost-sub');
-  if (lostEl) lostEl.textContent = '$' + lost.toLocaleString();
-  if (recEl)  recEl.textContent  = '$' + recover.toLocaleString();
-  if (subEl)  subEl.textContent  = '~' + Math.round(jobsLost) + ' jobs lost to missed calls';
+  const opportunities = cappedMissed * (conversion / 100);
+  const representedRevenue = Math.round(opportunities * value);
+  const revenueEl = document.getElementById('calc-lost');
+  const oppEl = document.getElementById('calc-opportunities');
+  const subEl = document.getElementById('calc-lost-sub');
+  if (revenueEl) revenueEl.textContent = '$' + representedRevenue.toLocaleString();
+  if (oppEl) oppEl.textContent = opportunities.toLocaleString(undefined, { maximumFractionDigits: 1 });
+  if (subEl) subEl.textContent = `Based on ${cappedMissed.toLocaleString()} missed calls and a ${conversion}% lead-to-customer rate`;
 }
 window.addEventListener('DOMContentLoaded', runCalc);
 

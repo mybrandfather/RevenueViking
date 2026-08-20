@@ -1,162 +1,57 @@
-REVENUEVIKING AI — PRE-LAUNCH CHECKLIST & SEO AUDIT
-=====================================================
-Brand: RevenueViking AI
-Domain: https://revenueviking.com
-Prepared for public launch.
+REVENUEVIKING — SALES-READY HANDOFF CHECKLIST
+==============================================
+Updated: 2026-08-17
+Domain: https://revenueviking.com/
 
+WHAT THIS PASS FIXED
+--------------------
+- Repositioned the public offer around AI receptionist + lead capture.
+- Removed unsupported enterprise/SaaS claims from indexable pages.
+- Removed unlimited-usage, fixed-SLA, blanket money-back and fixed-launch-time promises.
+- Simplified public pricing to the Founding Client offer:
+  $500 setup + $297/month + agreed usage/infrastructure costs.
+- Clarified that calendar, CRM, SMS and other integrations are optional and scoped separately.
+- Rebuilt the homepage around customer intake rather than hard-coded revenue claims.
+- Replaced the old hard-coded recovery calculator with a calculator using the visitor's own:
+  calls, missed calls, conversion rate and average job value.
+- Contact and demo forms validate fields and open WhatsApp with the entered details prefilled.
+- Added direct WhatsApp contact: +1 (860) 268-7732.
+- Rewrote About, Services, FAQ and all 7 industry pages to match the actual offer.
+- Rewrote the legal pages to remove promises that were not supported by the current service.
+- Rebuilt sitemap.xml so it contains only current indexable canonical URLs.
+- Simplified robots.txt and applied noindex to template/future pages.
+- Rewrote 9 high-intent blog articles with distinct, practical content.
+- Set lower-value duplicated/thin blog drafts to noindex,follow until they are properly rewritten.
+- Added reduced-motion and focus-visible accessibility support.
+- Added additional security headers in vercel.json.
 
-=====================================================
-PART 1 — WHAT WAS DONE IN THIS LAUNCH-PREP PASS
-=====================================================
+BEFORE YOU SEND PROSPECTS
+-------------------------
+[ ] Deploy this exact package to the production branch/site.
+[ ] Open the live site on iPhone/Android and desktop.
+[ ] Submit the Contact form and confirm WhatsApp opens with all entered details.
+[ ] Submit the Demo form and confirm WhatsApp opens with all entered details.
+[ ] Test the direct WhatsApp buttons.
+[ ] Test the homepage calculator with several inputs.
+[ ] Test both demo transcript play buttons.
+[ ] Click every primary navigation and footer link.
+[ ] Confirm revenueviking.com uses HTTPS and the preferred host redirects consistently.
 
-DOMAIN & BRAND CONSISTENCY
-- Canonical URLs added to every public page → https://revenueviking.com/[page]
-- Open Graph og:url added to all pages
-- Twitter/X summary_large_image card tags added to all pages
-- Organization + FAQPage JSON-LD on homepage point to revenueviking.com
-- Service + Breadcrumb + FAQ schema on all 7 industry pages
-- Sitemap.xml uses https://revenueviking.com throughout
-- Robots.txt points to the correct sitemap URL
+SEARCH / ANALYTICS AFTER DEPLOYMENT
+-----------------------------------
+[ ] Verify the domain in Google Search Console.
+[ ] Submit https://revenueviking.com/sitemap.xml.
+[ ] Request indexing for the homepage, services, pricing and the 7 industry pages.
+[ ] Do NOT request indexing for roadmap/templates/noindexed draft articles.
+[ ] Add analytics only after you have a real measurement ID and update the cookie/privacy notice if tracking changes.
+[ ] Track WhatsApp/demo clicks as conversions when analytics is actually configured.
 
-INDEXING CONTROL
-- Indexed: home, pricing, about, contact, FAQ, blog, all legal pages,
-  and all 7 industry pages
-- NOINDEX (noindex,nofollow) applied to:
-    • roadmap.html (not fully developed yet)
-    • local/city-page-template.html (template only)
-    • blog/article-template.html (template only)
-- These pages remain live and available for future growth
-- Roadmap removed from sitemap; templates blocked in robots.txt
+HERO VIDEO
+----------
+The HVAC Kling clip is intentionally NOT bundled into this package yet.
+Do not delay outreach for video. When added later, use a compressed muted looping WebM/MP4 and keep mobile performance fast.
 
-TRUST SECTIONS ADDED (homepage)
-- "Is RevenueViking Right for Your Business?" — Who it's FOR / NOT FOR
-- "What Happens After You Book a Demo" — 5-step journey
-  (Demo Call → Business Review → AI Setup → Testing → Go Live)
-
-DEMO IMPROVEMENTS
-- Heading updated to "See How RevenueViking Handles a Real Customer Call"
-- HVAC + Plumbing transcripts retained and animated
-- Lead Capture summary panel added under each transcript
-  (name, job type, urgency, booked slot, address)
-- Appointment-booked confirmation badge on each
-
-LEAD GENERATION / FORMS
-- Contact + Book Demo forms now have:
-    • Client-side validation (required fields, email format, phone format)
-    • Inline error messages that clear as the user types
-    • Honeypot hidden field for spam protection
-    • Success redirect to thank-you.html
-- NOTE: forms currently simulate submission. Before launch, connect to a
-  real backend (see Part 3).
-
-CONVERSION / CTAs
-- "Book Free Demo" present in: hero, navigation, mid-page strip,
-  pricing cards, final CTA, footer
-- "See How It Works" secondary CTA in hero
-- Homepage nav now includes Calculator + Demo quick links
-
-ACCESSIBILITY
-- Skip-to-content link added
-- Visible keyboard focus outlines (focus-visible) added
-- All form inputs have associated labels
-
-
-=====================================================
-PART 2 — LAUNCH CHECKLIST (DO THESE BEFORE GOING LIVE)
-=====================================================
-
-DOMAIN SETUP
-[ ] Point revenueviking.com DNS to your host (Hostinger)
-[ ] Force HTTPS (SSL certificate active)
-[ ] Set www → non-www redirect (or vice versa) — pick ONE canonical host
-[ ] Test that https://revenueviking.com loads index.html
-
-GOOGLE SEARCH CONSOLE
-[ ] Create/verify property for https://revenueviking.com
-[ ] Submit sitemap: https://revenueviking.com/sitemap.xml
-[ ] Request indexing for homepage + 7 industry pages
-[ ] Confirm roadmap/templates show as "Excluded by noindex"
-
-GOOGLE ANALYTICS 4
-[ ] Create GA4 property
-[ ] Replace G-XXXXXXXXXX in the homepage <head> with your real ID
-[ ] Add the same GA4 snippet to all other pages (or use a shared header)
-[ ] Mark "demo-form submit" and "contact-form submit" as conversions
-[ ] Verify real-time tracking fires on a test visit
-
-FORM TESTING
-[ ] Connect forms to a real backend (Supabase, Formspree, or your API)
-[ ] Submit the contact form → confirm data arrives + redirect works
-[ ] Submit the book-demo form → confirm data arrives + redirect works
-[ ] Test validation: empty required fields, bad email, bad phone
-[ ] Confirm honeypot blocks a bot submission (fill hidden field → should abort)
-[ ] Set up email notifications so you're alerted on every new lead
-
-MOBILE TESTING
-[ ] Test homepage on a real phone (iOS Safari + Android Chrome)
-[ ] Hamburger menu opens/closes, links work
-[ ] Calculator inputs are usable on mobile keyboard
-[ ] Demo play buttons + transcripts readable
-[ ] All CTAs tappable, no horizontal scroll
-
-PAGE SPEED / CORE WEB VITALS
-[ ] Run PageSpeed Insights on homepage + 1 industry page
-[ ] Confirm LCP < 2.5s, CLS < 0.1, INP < 200ms
-[ ] Add width/height to any images you add later (prevent layout shift)
-[ ] Consider converting any future hero images to WebP
-
-DEMO BOOKING TESTING
-[ ] Walk the full path: homepage → Book Demo → form → thank-you page
-[ ] Confirm thank-you page explains next steps
-[ ] Confirm you receive the lead notification
-
-PRE-FLIGHT SEO
-[ ] View source on each page → confirm one <title>, one canonical
-[ ] Confirm each page's canonical matches its real URL
-[ ] Test a few pages in the Rich Results Test (search.google.com/test/rich-results)
-[ ] Confirm OG tags preview correctly (use opengraph.xyz or LinkedIn Post Inspector)
-
-
-=====================================================
-PART 3 — CONNECTING FORMS TO A REAL BACKEND
-=====================================================
-
-The fastest no-code option for launch:
-  1. Create a free Formspree (or Web3Forms) account
-  2. Replace the JS submit simulation in js/app.js with a fetch() POST
-     to your Formspree endpoint
-  3. Keep the redirect to thank-you.html on success
-
-Supabase option (if you want a lead database):
-  - Create a "leads" table: id, name, business_name, email, phone,
-    website, message, industry, source_page, created_at
-  - Add a public insert policy (RLS) limited to the leads table
-  - POST form data to the Supabase REST endpoint with your anon key
-  - Pipe new rows to email via a Supabase Edge Function or Zapier
-
-The form HTML already includes all the right field names and a honeypot,
-so wiring a backend is a small change in one place (handleFormSubmit).
-
-
-=====================================================
-PART 4 — ONGOING SEO GROWTH (POST-LAUNCH)
-=====================================================
-
-WEEK 1–2
-- Publish the 4 pillar articles (see blog-content-strategy.txt)
-- Internally link each industry page to its relevant pillar
-
-MONTH 1–3
-- Publish 2 cluster articles/week, prioritising AI Receptionist + Lead Gen
-- Build out the first batch of [Industry]+[City] local pages from the
-  template (remove the noindex tag once each is fully written + unique)
-- Get the business listed in Google Business Profile + local citations
-
-INTERNAL LINKING RULES (already documented in blog-content-strategy.txt)
-- Every cluster article links UP to its pillar
-- Every article links to 2-3 siblings + 1 industry page + the demo CTA
-
-MEASURE
-- Track demo bookings as the primary conversion in GA4
-- Watch Search Console impressions/clicks on industry pages
-- Double down on whichever industry + city pages gain traction first
+BUSINESS RULE
+-------------
+After this package is deployed and the live conversion path is tested, STOP POLISHING THE SITE.
+Move to 5-10 researched prospects per day and improve the site only in response to real sales objections or delivery needs.
