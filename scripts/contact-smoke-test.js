@@ -2,7 +2,8 @@ const assert = require('node:assert/strict');
 const nodemailer = require('nodemailer');
 
 let sentMessage;
-nodemailer.createTransport = () => ({ sendMail: async message => { sentMessage = message; } });
+let deliveryResult = { accepted: ['hello@revenueviking.com'], rejected: [] };
+nodemailer.createTransport = () => ({ sendMail: async message => { sentMessage = message; return deliveryResult; } });
 const handler = require('../api/contact');
 
 function response() {
@@ -43,5 +44,9 @@ async function request(method, body = {}, ip = Math.random().toString()) {
   assert.equal(sentMessage.replyTo, 'alex@example.com');
   assert.match(sentMessage.subject, /North Star HVAC/);
   assert.doesNotMatch(sentMessage.html, /<script/i);
+  deliveryResult = { accepted: [], rejected: ['hello@revenueviking.com'] };
+  const rejected = await request('POST', valid);
+  assert.equal(rejected.statusCode, 502);
+  assert.equal(rejected.body.ok, false);
   console.log('Contact endpoint smoke tests passed.');
 })().catch(error => { console.error(error); process.exitCode = 1; });

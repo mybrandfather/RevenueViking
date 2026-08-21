@@ -132,7 +132,7 @@ module.exports = async function handler(req, res) {
       socketTimeout: 12000
     });
 
-    await transporter.sendMail({
+    const delivery = await transporter.sendMail({
       from: `RevenueViking Website <${process.env.SMTP_FROM_EMAIL}>`,
       to: process.env.CONTACT_TO_EMAIL,
       replyTo: data.email,
@@ -140,6 +140,13 @@ module.exports = async function handler(req, res) {
       text: textBody,
       html: htmlBody
     });
+
+    const acceptedCount = Array.isArray(delivery?.accepted) ? delivery.accepted.length : 0;
+    const rejectedCount = Array.isArray(delivery?.rejected) ? delivery.rejected.length : 0;
+    if (acceptedCount < 1 || rejectedCount > 0) {
+      console.error('[contact] Message was not accepted by SMTP.', { acceptedCount, rejectedCount });
+      return json(res, 502, { ok: false, message: 'We could not send your request right now.' });
+    }
 
     return json(res, 200, { ok: true });
   } catch (error) {

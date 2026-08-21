@@ -23,6 +23,7 @@ for (const file of htmlFiles) {
   const rootBase = /<base[^>]+href=["']\/["']/i.test(html);
   assert.match(html, /<title>[^<]+<\/title>/i, `Missing title in ${file}`);
   assert.match(html, /<meta[^>]+name=["']description["'][^>]*>/i, `Missing meta description in ${file}`);
+  assert.match(html, /(?:\.\.\/)?js\/app\.js\?v=20260821-contact-fix["']/i, `Unversioned app.js reference in ${file}`);
   if (!noindex) assert.match(html, /<link[^>]+rel=["']canonical["'][^>]*>/i, `Missing canonical in ${file}`);
 
   for (const match of html.matchAll(/<(?:a|link|script|img|source|video)\b[^>]+(?:href|src|poster)=["']([^"'#?]+)["']/gi)) {
@@ -45,6 +46,18 @@ for (const file of htmlFiles) {
     titles.set(title, file);
   }
 }
+
+const vercelConfig = JSON.parse(fs.readFileSync(path.join(root, 'vercel.json'), 'utf8'));
+const cacheHeader = source => vercelConfig.headers.find(rule => rule.source === source)?.headers.find(header => header.key === 'Cache-Control')?.value;
+assert.equal(cacheHeader('/js/(.*)'), 'public, max-age=0, must-revalidate');
+assert.equal(cacheHeader('/css/(.*)'), 'public, max-age=0, must-revalidate');
+assert.equal(cacheHeader('/images/(.*)'), 'public, max-age=31536000, immutable');
+
+const appScript = fs.readFileSync(path.join(root, 'js', 'app.js'), 'utf8');
+const successGuard = appScript.indexOf('if (!response.ok || !result.ok)');
+const redirect = appScript.indexOf("window.location.assign('thank-you.html')");
+assert.ok(successGuard > -1 && redirect > successGuard, 'Thank-you redirect must follow a confirmed API success response');
+assert.match(appScript, /catch\s*\{[\s\S]*hello@revenueviking\.com[\s\S]*submitButton\.disabled = false;/);
 
 const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
 assert.match(sitemap, /^<\?xml[^>]*>\s*<urlset\b/i, 'Invalid sitemap root');
