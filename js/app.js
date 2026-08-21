@@ -91,7 +91,7 @@ document.querySelectorAll('.faq-item').forEach(item => {
   });
 });
 
-// ── FORM VALIDATION + SUBMISSION ─────────────────────────────
+// ── CONTACT + DEMO FORM SUBMISSION ───────────────────────────
 function validateEmail(email) {
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
@@ -115,16 +115,27 @@ function clearFieldError(input) {
   if (existing) existing.remove();
 }
 
-function handleFormSubmit(e) {
+function setFormStatus(form, message, type = 'error') {
+  let status = form.querySelector('.form-status');
+  if (!status) {
+    status = document.createElement('div');
+    status.className = 'form-status';
+    status.setAttribute('role', 'status');
+    status.setAttribute('aria-live', 'polite');
+    form.appendChild(status);
+  }
+  status.classList.toggle('success', type === 'success');
+  status.innerHTML = message;
+}
+
+async function handleFormSubmit(e) {
   e.preventDefault();
   const form = e.target;
+  const submitButton = form.querySelector('button[type="submit"]');
+  setFormStatus(form, '', 'success');
 
-  // Honeypot spam protection — if hidden field filled, silently abort
   const honeypot = form.querySelector('input[name="company_website_hp"]');
-  if (honeypot && honeypot.value.trim() !== '') {
-    console.warn('Spam detected via honeypot.');
-    return;
-  }
+  if (honeypot?.value.trim()) return;
 
   // Validate required fields
   let valid = true;
@@ -156,21 +167,28 @@ function handleFormSubmit(e) {
     return;
   }
 
-  const details = Array.from(form.querySelectorAll('input:not([name="company_website_hp"]), select, textarea'))
-    .filter(field => field.value.trim())
-    .map(field => {
-      const label = field.closest('.form-group')?.querySelector('label')?.textContent.replace('*', '').trim()
-        || field.placeholder || 'Detail';
-      return `${label}: ${field.value.trim()}`;
+  const payload = Object.fromEntries(new FormData(form).entries());
+  payload.source = window.location.href;
+
+  submitButton.disabled = true;
+  submitButton.dataset.originalText = submitButton.textContent;
+  submitButton.textContent = 'Sending…';
+
+  try {
+    const response = await fetch('/api/contact', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
     });
-  const message = [
-    'Hi RevenueViking — I would like to learn about the AI receptionist and lead-capture service.',
-    '',
-    ...details,
-    '',
-    `Page: ${window.location.href}`
-  ].join('\n');
-  window.open(`https://wa.me/18602687732?text=${encodeURIComponent(message)}`, '_blank', 'noopener,noreferrer');
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || !result.ok) throw new Error(result.message || 'Submission failed');
+    setFormStatus(form, 'Your request was received. Redirecting…', 'success');
+    window.location.assign('thank-you.html');
+  } catch {
+    setFormStatus(form, 'We couldn’t send your request right now. Please email <a href="mailto:hello@revenueviking.com">hello@revenueviking.com</a>.');
+    submitButton.disabled = false;
+    submitButton.textContent = submitButton.dataset.originalText;
+  }
 }
 
 // Clear errors as user types
@@ -179,23 +197,27 @@ document.addEventListener('input', (e) => {
 });
 
 document.querySelectorAll('.contact-form').forEach(form => {
+  const started = form.querySelector('input[name="form_started_at"]');
+  if (started) started.value = Date.now().toString();
   form.addEventListener('submit', (e) => handleFormSubmit(e));
 });
 
 document.querySelectorAll('.demo-form').forEach(form => {
+  const started = form.querySelector('input[name="form_started_at"]');
+  if (started) started.value = Date.now().toString();
   form.addEventListener('submit', (e) => handleFormSubmit(e));
 });
 
-// ── WHATSAPP CONVERSION CTA ─────────────────────────────────
+// Add the business email once to each footer without crowding page CTAs.
 window.addEventListener('DOMContentLoaded', () => {
-  const link = document.createElement('a');
-  link.className = 'whatsapp-float';
-  link.href = 'https://wa.me/18602687732?text=' + encodeURIComponent('Hi RevenueViking — I would like to learn about the AI receptionist for my service business. Can we talk?');
-  link.target = '_blank';
-  link.rel = 'noopener noreferrer';
-  link.setAttribute('aria-label', 'Chat with RevenueViking on WhatsApp');
-  link.innerHTML = '<span aria-hidden="true">◉</span><strong>WhatsApp</strong>';
-  document.body.appendChild(link);
+  document.querySelectorAll('.footer-brand').forEach(footerBrand => {
+    if (footerBrand.querySelector('.footer-email')) return;
+    const email = document.createElement('a');
+    email.className = 'footer-email';
+    email.href = 'mailto:hello@revenueviking.com';
+    email.textContent = 'hello@revenueviking.com';
+    footerBrand.appendChild(email);
+  });
 });
 
 // ── NOTIFICATION ─────────────────────────────────────────────

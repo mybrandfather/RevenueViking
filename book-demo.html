@@ -32,7 +32,7 @@
 <p>In a short demo, we show how an AI receptionist can be configured around your business name, services and intake questions. The goal is simple: capture the caller details your team needs for follow-up.</p>
 </div></div>
 <section style="padding:72px 0"><div class="container">
-<div style="display:grid;grid-template-columns:1fr 1.4fr;gap:64px;align-items:start">
+<div class="contact-layout">
 <div class="reveal">
 <h2 class="display-sm" style="margin-bottom:14px">What Happens on the Demo</h2>
 <div class="gold-line"></div>
@@ -59,44 +59,39 @@
 <div class="reveal" style="animation-delay:0.15s">
 <div class="card" style="padding:36px">
 <h3 style="font-family:var(--ff-display);font-size:1.3rem;font-weight:800;margin-bottom:4px">Book Your Free Demo</h3>
-<p style="font-size:0.85rem;color:var(--mist);margin-bottom:24px">Short, practical demo. Use WhatsApp for the fastest response.</p>
+<p style="font-size:0.85rem;color:var(--mist);margin-bottom:24px">Tell us a little about your business so we can prepare a relevant, practical demo.</p>
 <form class="demo-form" novalidate="">
+<input name="formType" type="hidden" value="demo"/><input name="form_started_at" type="hidden" value=""/>
 <div aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px">
 <label>Do not fill this field<input autocomplete="off" name="company_website_hp" tabindex="-1" type="text"/></label>
 </div>
 <div class="form-row">
-<div class="form-group"><label class="form-label">Your Name *</label><input class="form-input" placeholder="John Smith" required="" type="text"/></div>
-<div class="form-group"><label class="form-label">Business Name *</label><input class="form-input" placeholder="Smith's HVAC" required="" type="text"/></div>
+<div class="form-group"><label class="form-label" for="demo-name">Your Name *</label><input class="form-input" id="demo-name" maxlength="100" name="name" placeholder="John Smith" required="" type="text"/></div>
+<div class="form-group"><label class="form-label" for="demo-business">Business Name *</label><input class="form-input" id="demo-business" maxlength="140" name="businessName" placeholder="Smith's HVAC" required="" type="text"/></div>
 </div>
 <div class="form-row">
-<div class="form-group"><label class="form-label">Email *</label><input class="form-input" placeholder="john@smithshvac.com" required="" type="email"/></div>
-<div class="form-group"><label class="form-label">Phone *</label><input class="form-input" placeholder="+1 (555) 000-0000" required="" type="tel"/></div>
+<div class="form-group"><label class="form-label" for="demo-email">Email *</label><input autocomplete="email" class="form-input" id="demo-email" maxlength="254" name="email" placeholder="john@smithshvac.com" required="" type="email"/></div>
+<div class="form-group"><label class="form-label" for="demo-phone">Phone <span style="color:var(--fog)">(optional)</span></label><input autocomplete="tel" class="form-input" id="demo-phone" maxlength="40" name="phone" placeholder="Your business phone" type="tel"/></div>
 </div>
-<div class="form-group"><label class="form-label">Industry *</label>
-<select class="form-select" required="">
+<div class="form-group"><label class="form-label" for="demo-website">Business Website</label><input class="form-input" id="demo-website" maxlength="300" name="website" placeholder="https://yourbusiness.com" type="text"/></div>
+<div class="form-group"><label class="form-label" for="demo-industry">Industry *</label>
+<select class="form-select" id="demo-industry" name="industry" required="">
 <option value="">Select your trade...</option>
 <option>HVAC</option><option>Plumbing</option><option>Roofing</option>
-<option>Electrical</option><option>Landscaping</option><option>Cleaning Services</option><option>Other</option>
+<option>Electrical</option><option>Garage Doors</option><option>Pest Control</option><option>Cleaning Services</option><option>Landscaping</option><option>Contractors</option><option>Other Home Services</option>
 </select>
 </div>
-<div class="form-group"><label class="form-label">Approx. calls per day?</label>
-<select class="form-select">
+<div class="form-group"><label class="form-label" for="demo-volume">Approximate Calls Per Day</label>
+<select class="form-select" id="demo-volume" name="callVolume">
 <option value="">Select range...</option>
 <option>1–5 calls/day</option><option>6–15 calls/day</option>
 <option>16–30 calls/day</option><option>30+ calls/day</option>
 </select>
 </div>
-<div class="form-group"><label class="form-label">Preferred demo time</label>
-<select class="form-select">
-<option>Morning (8am–12pm ET)</option>
-<option>Afternoon (12pm–5pm ET)</option>
-<option>Any time — just reach out</option>
-</select>
-</div>
-<div class="form-group"><label class="form-label">Anything else we should know?</label><textarea class="form-textarea" placeholder="Tell us about your business, your biggest challenge with calls, or any questions you have..." style="min-height:80px"></textarea></div>
-<button class="btn btn-gold" style="width:100%;justify-content:center;padding:15px;font-size:1rem" type="submit">Continue on WhatsApp →</button>
-<p style="text-align:center;font-size:0.78rem;color:var(--fog);margin-top:10px">Your details are placed into a WhatsApp message for you to review before sending.</p>
-</form><a class="btn btn-ghost" href="https://wa.me/18602687732?text=Hi%20RevenueViking%20%E2%80%94%20I%20would%20like%20to%20request%20an%20AI%20receptionist%20demo." rel="noopener noreferrer" style="width:100%;justify-content:center;margin-top:10px" target="_blank">Or chat on WhatsApp directly</a>
+<div class="form-group"><label class="form-label" for="demo-message">What happens today when your team can’t answer a call? *</label><textarea class="form-textarea" id="demo-message" maxlength="3000" name="message" placeholder="Tell us how missed or after-hours calls are handled today and what you want to improve." required="" style="min-height:100px"></textarea></div>
+<button class="btn btn-gold" style="width:100%;justify-content:center;padding:15px;font-size:1rem" type="submit">Request My Free Demo →</button>
+<p style="text-align:center;font-size:0.78rem;color:var(--fog);margin-top:10px">Prefer email? Write to <a href="mailto:hello@revenueviking.com" style="color:var(--gold2)">hello@revenueviking.com</a>.</p>
+</form>
 </div>
 </div>
 </div>

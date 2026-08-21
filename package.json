@@ -1,0 +1,15 @@
+{
+  "name": "revenueviking-website",
+  "version": "1.0.0",
+  "private": true,
+  "description": "RevenueViking sales website and contact form endpoint",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node scripts/contact-smoke-test.js && node scripts/site-smoke-test.js"
+  },
+  "dependencies": {
+    "nodemailer": "^9.0.5"
+  }
+}
