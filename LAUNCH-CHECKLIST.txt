@@ -14,8 +14,8 @@ WHAT THIS PASS FIXED
 - Rebuilt the homepage around customer intake rather than hard-coded revenue claims.
 - Replaced the old hard-coded recovery calculator with a calculator using the visitor's own:
   calls, missed calls, conversion rate and average job value.
-- Contact and demo forms validate fields and open WhatsApp with the entered details prefilled.
-- Added direct WhatsApp contact: +1 (860) 268-7732.
+- Contact and demo forms validate fields and send enquiries through the server-side contact endpoint.
+- Public contact email: hello@revenueviking.com.
 - Rewrote About, Services, FAQ and all 7 industry pages to match the actual offer.
 - Rewrote the legal pages to remove promises that were not supported by the current service.
 - Rebuilt sitemap.xml so it contains only current indexable canonical URLs.
@@ -29,9 +29,9 @@ BEFORE YOU SEND PROSPECTS
 -------------------------
 [ ] Deploy this exact package to the production branch/site.
 [ ] Open the live site on iPhone/Android and desktop.
-[ ] Submit the Contact form and confirm WhatsApp opens with all entered details.
-[ ] Submit the Demo form and confirm WhatsApp opens with all entered details.
-[ ] Test the direct WhatsApp buttons.
+[ ] Add all required SMTP environment variables in Vercel for Production, Preview and Development.
+[ ] Submit the Contact form and confirm the enquiry arrives at hello@revenueviking.com.
+[ ] Submit the Demo form and confirm the enquiry arrives at hello@revenueviking.com.
 [ ] Test the homepage calculator with several inputs.
 [ ] Test both demo transcript play buttons.
 [ ] Click every primary navigation and footer link.
@@ -44,12 +44,12 @@ SEARCH / ANALYTICS AFTER DEPLOYMENT
 [ ] Request indexing for the homepage, services, pricing and the 7 industry pages.
 [ ] Do NOT request indexing for roadmap/templates/noindexed draft articles.
 [ ] Add analytics only after you have a real measurement ID and update the cookie/privacy notice if tracking changes.
-[ ] Track WhatsApp/demo clicks as conversions when analytics is actually configured.
+[ ] Track demo/contact submissions as conversions when analytics is actually configured.
 
 HERO VIDEO
 ----------
-The HVAC Kling clip is intentionally NOT bundled into this package yet.
-Do not delay outreach for video. When added later, use a compressed muted looping WebM/MP4 and keep mobile performance fast.
+The approved HVAC technician clip is bundled as an optimized WebM with MP4 fallback and a static poster.
+It is muted, plays once to avoid a visible loop restart, defers loading, and respects reduced-motion preferences.
 
 BUSINESS RULE
 -------------
