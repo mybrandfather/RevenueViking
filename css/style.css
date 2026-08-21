@@ -1198,7 +1198,7 @@ footer {
   margin: 12px 0 20px;
   max-width: 260px;
 }
-.footer-socials { display: flex; gap: 10px; }
+.footer-socials { display: flex; align-items: center; gap: 10px; }
 .social-btn {
   width: 36px; height: 36px;
   background: var(--steel);
@@ -1207,10 +1207,12 @@ footer {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 14px;
+  color: var(--mist);
+  text-decoration: none;
   transition: all 0.15s;
 }
-.social-btn:hover { border-color: var(--gold); background: rgba(212,160,23,0.08); }
+.social-btn svg { width: 16px; height: 16px; display: block; }
+.social-btn:hover { border-color: var(--gold); background: rgba(212,160,23,0.08); color: var(--gold2); }
 .footer-col h4 {
   font-family: var(--ff-display);
   font-size: 0.82rem;
