@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://revenueviking.com/sitemap.xml
+Sitemap: https://www.revenueviking.com/sitemap.xml
