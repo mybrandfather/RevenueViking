@@ -24,7 +24,10 @@ for (const file of htmlFiles) {
   assert.match(html, /<title>[^<]+<\/title>/i, `Missing title in ${file}`);
   assert.match(html, /<meta[^>]+name=["']description["'][^>]*>/i, `Missing meta description in ${file}`);
   assert.match(html, /(?:\.\.\/)?js\/app\.js\?v=20260821-contact-fix["']/i, `Unversioned app.js reference in ${file}`);
-  if (!noindex) assert.match(html, /<link[^>]+rel=["']canonical["'][^>]*>/i, `Missing canonical in ${file}`);
+  if (!noindex) {
+    assert.match(html, /<link[^>]+rel=["']canonical["'][^>]*>/i, `Missing canonical in ${file}`);
+    assert.match(html, /<link[^>]+href=["']https:\/\/www\.revenueviking\.com\//i, `Canonical must use the live www hostname in ${file}`);
+  }
 
   for (const match of html.matchAll(/<(?:a|link|script|img|source|video)\b[^>]+(?:href|src|poster)=["']([^"'#?]+)["']/gi)) {
     const reference = match[1];
@@ -61,9 +64,10 @@ assert.match(appScript, /catch\s*\{[\s\S]*hello@revenueviking\.com[\s\S]*submitB
 
 const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
 assert.match(sitemap, /^<\?xml[^>]*>\s*<urlset\b/i, 'Invalid sitemap root');
-for (const [, location] of sitemap.matchAll(/<loc>https:\/\/revenueviking\.com\/([^<]*)<\/loc>/g)) {
+for (const [, location] of sitemap.matchAll(/<loc>https:\/\/www\.revenueviking\.com\/([^<]*)<\/loc>/g)) {
   const target = location ? path.join(root, location) : path.join(root, 'index.html');
   assert.ok(fs.existsSync(target), `Sitemap target missing: ${location || '/'}`);
 }
+assert.doesNotMatch(sitemap, /https:\/\/revenueviking\.com\//, 'Sitemap must not mix apex and www hostnames');
 
 console.log(`Site smoke tests passed across ${htmlFiles.length} HTML files.`);

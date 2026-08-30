@@ -19,8 +19,8 @@
   --goldf:    #FEF3C7;
   --ice:      #F0F4FF;
   --ice2:     #C8D3F0;
-  --mist:     #8B95A8;
-  --fog:      #4A5060;
+  --mist:     #A5AFC1;
+  --fog:      #788297;
   --success:  #10B981;
   --danger:   #EF4444;
 
@@ -1275,6 +1275,51 @@ footer {
 .form-select option { background: var(--steel2); }
 .form-textarea { resize: vertical; min-height: 120px; line-height: 1.6; }
 .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.demo-next-step {
+  margin-bottom: 24px;
+  padding: 12px 14px;
+  border-left: 3px solid var(--gold2);
+  background: rgba(212,160,23,0.06);
+  color: var(--mist);
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+.lead-proof-card {
+  max-width: 980px;
+  margin: 24px auto 0;
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 24px;
+  align-items: stretch;
+}
+.lead-proof-copy { display:flex; flex-direction:column; justify-content:center; }
+.lead-proof-copy p { color:var(--mist); line-height:1.75; margin-top:12px; }
+.lead-record {
+  background: var(--steel);
+  border: 1px solid var(--rim);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+}
+.lead-record-label {
+  color: var(--gold2);
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.lead-record-row {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 14px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--rim);
+  font-size: .84rem;
+}
+.lead-record-row:last-child { border-bottom: 0; }
+.lead-record-row span:first-child { color: var(--fog); }
+.lead-record-row span:last-child { color: var(--ice); font-weight: 600; }
 
 /* ──────────────────────────────────────────────────────────
    BLOG STYLES
@@ -1325,6 +1370,13 @@ footer {
   flex: 1;
 }
 .blog-meta { font-size: 0.75rem; color: var(--fog); }
+.article-byline {
+  margin: -4px 0 22px;
+  color: var(--fog);
+  font-size: .78rem;
+  font-weight: 600;
+  letter-spacing: .02em;
+}
 .blog-cta { font-size: 0.82rem; font-weight: 600; color: var(--gold2); display: flex; align-items: center; gap: 5px; }
 
 /* ──────────────────────────────────────────────────────────
@@ -1448,7 +1500,7 @@ footer {
 
 /* ─── UPGRADE: NEW SECTION RESPONSIVE RULES ─── */
 @media (max-width: 900px) {
-  .calc-grid, .demo-grid { grid-template-columns: 1fr !important; }
+  .calc-grid, .demo-grid, .lead-proof-card { grid-template-columns: 1fr !important; }
   .timeline-grid { grid-template-columns: 1fr 1fr !important; }
 }
 @media (max-width: 560px) {

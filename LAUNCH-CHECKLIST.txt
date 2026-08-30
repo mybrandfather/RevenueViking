@@ -1,7 +1,7 @@
 REVENUEVIKING — SALES-READY HANDOFF CHECKLIST
 ==============================================
 Updated: 2026-08-17
-Domain: https://revenueviking.com/
+Domain: https://www.revenueviking.com/
 
 WHAT THIS PASS FIXED
 --------------------
@@ -40,7 +40,7 @@ BEFORE YOU SEND PROSPECTS
 SEARCH / ANALYTICS AFTER DEPLOYMENT
 -----------------------------------
 [ ] Verify the domain in Google Search Console.
-[ ] Submit https://revenueviking.com/sitemap.xml.
+[ ] Submit https://www.revenueviking.com/sitemap.xml.
 [ ] Request indexing for the homepage, services, pricing and the 7 industry pages.
 [ ] Do NOT request indexing for roadmap/templates/noindexed draft articles.
 [ ] Add analytics only after you have a real measurement ID and update the cookie/privacy notice if tracking changes.
