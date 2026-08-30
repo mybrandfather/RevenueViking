@@ -23,7 +23,7 @@ for (const file of htmlFiles) {
   const rootBase = /<base[^>]+href=["']\/["']/i.test(html);
   assert.match(html, /<title>[^<]+<\/title>/i, `Missing title in ${file}`);
   assert.match(html, /<meta[^>]+name=["']description["'][^>]*>/i, `Missing meta description in ${file}`);
-  assert.match(html, /(?:\.\.\/)?js\/app\.js\?v=20260821-contact-fix["']/i, `Unversioned app.js reference in ${file}`);
+  assert.match(html, /(?:\.\.\/)?js\/app\.js\?v=[a-z0-9._-]+["']/i, `Unversioned app.js reference in ${file}`);
   if (!noindex) {
     assert.match(html, /<link[^>]+rel=["']canonical["'][^>]*>/i, `Missing canonical in ${file}`);
     assert.match(html, /<link[^>]+href=["']https:\/\/www\.revenueviking\.com\//i, `Canonical must use the live www hostname in ${file}`);
