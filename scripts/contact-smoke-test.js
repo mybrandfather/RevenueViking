@@ -44,6 +44,20 @@ async function request(method, body = {}, ip = Math.random().toString()) {
   assert.equal(sentMessage.replyTo, 'alex@example.com');
   assert.match(sentMessage.subject, /North Star HVAC/);
   assert.doesNotMatch(sentMessage.html, /<script/i);
+  const founding = {
+    ...valid,
+    formType: 'founding-client', city: 'Hartford', state: 'CT',
+    callVolume: 'Not sure', utmSource: 'meta', utmMedium: 'paid_social',
+    utmCampaign: 'founding_clients', utmContent: '<script>alert(1)</script>',
+    utmTerm: 'connecticut hvac'
+  };
+  assert.equal((await request('POST', { ...founding, state: '' })).statusCode, 400);
+  const foundingSuccess = await request('POST', founding);
+  assert.equal(foundingSuccess.statusCode, 200);
+  assert.match(sentMessage.subject, /Founding Client Application/);
+  assert.match(sentMessage.text, /UTM Source: meta/);
+  assert.match(sentMessage.text, /UTM Campaign: founding_clients/);
+  assert.doesNotMatch(sentMessage.html, /<script/i);
   deliveryResult = { accepted: [], rejected: ['hello@revenueviking.com'] };
   const rejected = await request('POST', valid);
   assert.equal(rejected.statusCode, 502);
