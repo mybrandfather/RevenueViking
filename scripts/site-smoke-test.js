@@ -65,6 +65,20 @@ assert.match(appScript, /catch\s*\{[\s\S]*hello@revenueviking\.com[\s\S]*submitB
 const foundingPage = fs.readFileSync(path.join(root, 'founding-clients.html'), 'utf8');
 assert.match(foundingPage, /<link href="https:\/\/www\.revenueviking\.com\/founding-clients" rel="canonical"/);
 assert.match(foundingPage, /\$200[\s\S]*\$97\/month[\s\S]*\$197\/mo/);
+assert.match(foundingPage, /AI Receptionist for Contractors/);
+assert.match(foundingPage, /AI receptionist for contractors/i);
+assert.match(foundingPage, /missed call answering service/i);
+assert.match(foundingPage, /AI phone answering for HVAC, plumbing, roofing, electricians/i);
+assert.match(foundingPage, /id="rachel-demo"/);
+assert.match(foundingPage, /Hear Rachel, your AI receptionist/);
+assert.match(foundingPage, /Built for busy contractors in the field/);
+assert.equal((foundingPage.match(/class="rachel-demo-card"/g) || []).length, 4);
+for (const industry of ['HVAC', 'Plumbing', 'Electrical', 'Roofing', 'Garage Doors', 'Cleaning', 'Landscaping', 'General Contractors']) {
+  assert.match(foundingPage, new RegExp(`>${industry}<`), `Missing founding industry: ${industry}`);
+}
+for (const question of ['Does Rachel replace my business phone number?', 'What happens during emergencies?', 'How do I get the lead details?', 'Can I review calls?', 'What does setup cost?', 'Can I cancel?', 'Is this for small businesses?']) {
+  assert.match(foundingPage, new RegExp(question.replace(/[?]/g, '\\?')), `Missing founding FAQ question: ${question}`);
+}
 assert.match(foundingPage, /name="formType" type="hidden" value="founding-client"/);
 for (const field of ['name', 'businessName', 'industry', 'city', 'state', 'phone', 'email', 'callVolume', 'message']) {
   assert.match(foundingPage, new RegExp(`name="${field}"[^>]*required|required[^>]*name="${field}"`), `Required founding field missing: ${field}`);
