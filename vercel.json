@@ -55,6 +55,12 @@
       ]
     }
   ],
+  "rewrites": [
+    {
+      "source": "/founding-clients",
+      "destination": "/founding-clients.html"
+    }
+  ],
   "redirects": [
     {
       "source": "/index.html",

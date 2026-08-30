@@ -128,6 +128,28 @@ function setFormStatus(form, message, type = 'error') {
   status.innerHTML = message;
 }
 
+function trackFoundingClientSuccess() {
+  window.dispatchEvent(new CustomEvent('revenueviking:application-success', {
+    detail: { formType: 'founding-client' }
+  }));
+  if (Array.isArray(window.dataLayer)) {
+    window.dataLayer.push({ event: 'founding_client_application_success' });
+  }
+  if (typeof window.fbq === 'function') {
+    window.fbq('track', 'Lead', { content_name: 'Founding Client Application' });
+  }
+}
+
+function showFoundingClientSuccess(form) {
+  form.innerHTML = `
+    <div class="founding-success" role="status" aria-live="polite">
+      <h4 tabindex="-1">Thanks! Your application was received.</h4>
+      <p>We’ll review your business and contact you about your founding-client demo.</p>
+    </div>`;
+  const heading = form.querySelector('h4');
+  heading?.focus();
+}
+
 async function handleFormSubmit(e) {
   e.preventDefault();
   const form = e.target;
@@ -182,6 +204,11 @@ async function handleFormSubmit(e) {
     });
     const result = await response.json().catch(() => ({}));
     if (!response.ok || !result.ok) throw new Error(result.message || 'Submission failed');
+    if (form.dataset.successMode === 'inline' && payload.formType === 'founding-client') {
+      trackFoundingClientSuccess();
+      showFoundingClientSuccess(form);
+      return;
+    }
     setFormStatus(form, 'Your request was received. Redirecting…', 'success');
     window.location.assign('thank-you.html');
   } catch {
@@ -206,6 +233,24 @@ document.querySelectorAll('.demo-form').forEach(form => {
   const started = form.querySelector('input[name="form_started_at"]');
   if (started) started.value = Date.now().toString();
   form.addEventListener('submit', (e) => handleFormSubmit(e));
+});
+
+// Preserve paid-campaign attribution in the founding-client application.
+window.addEventListener('DOMContentLoaded', () => {
+  const form = document.querySelector('.founding-client-form');
+  if (!form) return;
+  const params = new URLSearchParams(window.location.search);
+  const attribution = {
+    utmSource: 'utm_source',
+    utmMedium: 'utm_medium',
+    utmCampaign: 'utm_campaign',
+    utmContent: 'utm_content',
+    utmTerm: 'utm_term'
+  };
+  Object.entries(attribution).forEach(([fieldName, queryName]) => {
+    const input = form.elements.namedItem(fieldName);
+    if (input instanceof HTMLInputElement) input.value = (params.get(queryName) || '').slice(0, 200);
+  });
 });
 
 // Add the business email once to each footer without crowding page CTAs.

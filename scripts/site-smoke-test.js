@@ -62,10 +62,35 @@ const redirect = appScript.indexOf("window.location.assign('thank-you.html')");
 assert.ok(successGuard > -1 && redirect > successGuard, 'Thank-you redirect must follow a confirmed API success response');
 assert.match(appScript, /catch\s*\{[\s\S]*hello@revenueviking\.com[\s\S]*submitButton\.disabled = false;/);
 
+const foundingPage = fs.readFileSync(path.join(root, 'founding-clients.html'), 'utf8');
+assert.match(foundingPage, /<link href="https:\/\/www\.revenueviking\.com\/founding-clients" rel="canonical"/);
+assert.match(foundingPage, /\$200[\s\S]*\$97\/month[\s\S]*\$197\/mo/);
+assert.match(foundingPage, /name="formType" type="hidden" value="founding-client"/);
+for (const field of ['name', 'businessName', 'industry', 'city', 'state', 'phone', 'email', 'callVolume', 'message']) {
+  assert.match(foundingPage, new RegExp(`name="${field}"[^>]*required|required[^>]*name="${field}"`), `Required founding field missing: ${field}`);
+}
+for (const field of ['utmSource', 'utmMedium', 'utmCampaign', 'utmContent', 'utmTerm']) {
+  assert.match(foundingPage, new RegExp(`name="${field}"`), `UTM field missing: ${field}`);
+}
+assert.doesNotMatch(foundingPage, /G-XXXXXXXXXX|fbq\s*\(\s*['"]init['"]|unlimited calls|never miss another call/i);
+const termsPage = fs.readFileSync(path.join(root, 'terms-of-service.html'), 'utf8');
+assert.match(termsPage, /Regular public pricing is \$500[\s\S]*\$200 setup[\s\S]*\$97 per month[\s\S]*\$197 per month/);
+assert.doesNotMatch(termsPage, /founding-client offer is currently \$500/i);
+const inlineSuccess = appScript.indexOf("form.dataset.successMode === 'inline'");
+const metaLead = appScript.indexOf("window.fbq('track', 'Lead'");
+const trackingCall = appScript.indexOf('trackFoundingClientSuccess();');
+assert.ok(inlineSuccess > successGuard && trackingCall > successGuard && metaLead > -1, 'Founding conversion hook must run only after confirmed API success');
+assert.match(appScript, /new URLSearchParams\(window\.location\.search\)/);
+assert.match(appScript, /utm_source[\s\S]*utm_medium[\s\S]*utm_campaign[\s\S]*utm_content[\s\S]*utm_term/);
+
+const foundingRewrite = vercelConfig.rewrites?.find(rule => rule.source === '/founding-clients');
+assert.equal(foundingRewrite?.destination, '/founding-clients.html');
+
 const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
 assert.match(sitemap, /^<\?xml[^>]*>\s*<urlset\b/i, 'Invalid sitemap root');
 for (const [, location] of sitemap.matchAll(/<loc>https:\/\/www\.revenueviking\.com\/([^<]*)<\/loc>/g)) {
-  const target = location ? path.join(root, location) : path.join(root, 'index.html');
+  let target = location ? path.join(root, location) : path.join(root, 'index.html');
+  if (!fs.existsSync(target) && location && !path.extname(location)) target = `${target}.html`;
   assert.ok(fs.existsSync(target), `Sitemap target missing: ${location || '/'}`);
 }
 assert.doesNotMatch(sitemap, /https:\/\/revenueviking\.com\//, 'Sitemap must not mix apex and www hostnames');

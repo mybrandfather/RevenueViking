@@ -11,10 +11,17 @@ const FIELD_LIMITS = {
   phone: 40,
   website: 300,
   industry: 100,
+  city: 100,
+  state: 100,
   callVolume: 100,
   message: 3000,
   source: 300,
-  formType: 30
+  formType: 30,
+  utmSource: 200,
+  utmMedium: 200,
+  utmCampaign: 200,
+  utmContent: 200,
+  utmTerm: 200
 };
 
 function json(res, status, body) {
@@ -74,6 +81,9 @@ module.exports = async function handler(req, res) {
   if (!data.name || !data.businessName || !data.email || !data.message) {
     return json(res, 400, { ok: false, message: 'Please complete all required fields.' });
   }
+  if (data.formType === 'founding-client' && (!data.industry || !data.city || !data.state || !data.phone || !data.callVolume)) {
+    return json(res, 400, { ok: false, message: 'Please complete all required founding-client application fields.' });
+  }
   if (!validEmail(data.email)) {
     return json(res, 400, { ok: false, message: 'Please enter a valid email address.' });
   }
@@ -103,6 +113,7 @@ module.exports = async function handler(req, res) {
   }
 
   const timestamp = new Date().toISOString();
+  const isFoundingClient = data.formType === 'founding-client';
   const fields = [
     ['Name', data.name],
     ['Business', data.businessName],
@@ -110,14 +121,22 @@ module.exports = async function handler(req, res) {
     ['Phone', data.phone || 'Not provided'],
     ['Website', data.website || 'Not provided'],
     ['Industry', data.industry || 'Not provided'],
+    ['City', data.city || 'Not provided'],
+    ['State', data.state || 'Not provided'],
     ['Call Volume', data.callVolume || 'Not provided'],
     ['Message / Main Challenge', data.message],
     ['Form', data.formType || 'contact'],
     ['Page / Source', data.source || 'Not provided'],
+    ['UTM Source', data.utmSource || 'Not provided'],
+    ['UTM Medium', data.utmMedium || 'Not provided'],
+    ['UTM Campaign', data.utmCampaign || 'Not provided'],
+    ['UTM Content', data.utmContent || 'Not provided'],
+    ['UTM Term', data.utmTerm || 'Not provided'],
     ['Timestamp', timestamp]
   ];
   const textBody = fields.map(([label, value]) => `${label}: ${value}`).join('\n');
-  const htmlBody = `<h2>New RevenueViking Demo Request</h2><table cellpadding="6" cellspacing="0" style="border-collapse:collapse">${fields.map(([label, value]) => `<tr><th align="left" valign="top" style="border-bottom:1px solid #ddd">${escapeHtml(label)}</th><td style="border-bottom:1px solid #ddd">${escapeHtml(value)}</td></tr>`).join('')}</table>`;
+  const requestTitle = isFoundingClient ? 'New RevenueViking Founding Client Application' : 'New RevenueViking Demo Request';
+  const htmlBody = `<h2>${requestTitle}</h2><table cellpadding="6" cellspacing="0" style="border-collapse:collapse">${fields.map(([label, value]) => `<tr><th align="left" valign="top" style="border-bottom:1px solid #ddd">${escapeHtml(label)}</th><td style="border-bottom:1px solid #ddd">${escapeHtml(value)}</td></tr>`).join('')}</table>`;
 
   try {
     const transporter = nodemailer.createTransport({
@@ -136,7 +155,7 @@ module.exports = async function handler(req, res) {
       from: `RevenueViking Website <${process.env.SMTP_FROM_EMAIL}>`,
       to: process.env.CONTACT_TO_EMAIL,
       replyTo: data.email,
-      subject: `New RevenueViking Demo Request — ${data.businessName}`,
+      subject: `${isFoundingClient ? 'Founding Client Application' : 'New RevenueViking Demo Request'} — ${data.businessName}`,
       text: textBody,
       html: htmlBody
     });
