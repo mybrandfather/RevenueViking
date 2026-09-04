@@ -96,9 +96,18 @@ const trackingCall = appScript.indexOf('trackFoundingClientSuccess();');
 assert.ok(inlineSuccess > successGuard && trackingCall > successGuard && metaLead > -1, 'Founding conversion hook must run only after confirmed API success');
 assert.match(appScript, /new URLSearchParams\(window\.location\.search\)/);
 assert.match(appScript, /utm_source[\s\S]*utm_medium[\s\S]*utm_campaign[\s\S]*utm_content[\s\S]*utm_term/);
+assert.match(appScript, /captureFoundingClientAttribution\(\);/);
+assert.doesNotMatch(appScript, /input instanceof HTMLInputElement/);
 
 const foundingRewrite = vercelConfig.rewrites?.find(rule => rule.source === '/founding-clients');
 assert.equal(foundingRewrite?.destination, '/founding-clients.html');
+const playbooksRewrite = vercelConfig.rewrites?.find(rule => rule.source === '/industry-playbooks');
+assert.equal(playbooksRewrite?.destination, '/industry-playbooks.html');
+
+const playbooksPage = fs.readFileSync(path.join(root, 'industry-playbooks.html'), 'utf8');
+for (const slug of ['hvac', 'plumbing', 'electrical', 'roofing', 'garage-door', 'pest-control', 'cleaning', 'landscaping', 'general-contractor']) {
+  assert.match(playbooksPage, new RegExp(`assets/playbooks/${slug}-ai-playbook\\.webp`), `Missing playbook asset: ${slug}`);
+}
 
 const sitemap = fs.readFileSync(path.join(root, 'sitemap.xml'), 'utf8');
 assert.match(sitemap, /^<\?xml[^>]*>\s*<urlset\b/i, 'Invalid sitemap root');
