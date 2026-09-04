@@ -53,12 +53,25 @@
           "value": "public, max-age=31536000, immutable"
         }
       ]
+    },
+    {
+      "source": "/assets/playbooks/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
     }
   ],
   "rewrites": [
     {
       "source": "/founding-clients",
       "destination": "/founding-clients.html"
+    },
+    {
+      "source": "/industry-playbooks",
+      "destination": "/industry-playbooks.html"
     }
   ],
   "redirects": [

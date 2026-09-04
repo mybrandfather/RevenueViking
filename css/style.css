@@ -1841,3 +1841,47 @@ button:disabled { cursor: wait; opacity: 0.68; }
   .founding-offer-card { padding: 22px; }
   .founding-submit { white-space: normal; text-align: center; }
 }
+
+/* ── INDUSTRY PLAYBOOKS ──────────────────────────────────── */
+.playbooks-page { background: var(--forge); }
+.playbooks-page .nav { background: rgba(10,11,15,.96); }
+.playbooks-page .mobile-cta { margin-top: 12px; }
+.playbooks-hero {
+  padding: calc(var(--nav-h) + 88px) 0 82px;
+  text-align: center;
+  background: radial-gradient(circle at 50% 12%,rgba(212,160,23,.13),transparent 46%),var(--forge);
+  border-bottom: 1px solid var(--steel2);
+}
+.playbooks-hero-inner { max-width: 920px; }
+.playbooks-hero .eyebrow { justify-content: center; }
+.playbooks-hero p { max-width: 760px; margin: 20px auto 30px; color: var(--mist); line-height: 1.75; }
+.playbooks-section { padding: 96px 0; }
+.playbooks-section .section-heading { max-width: 760px; }
+.playbooks-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px; }
+.playbook-card { overflow: hidden; background: var(--forge2); border: 1px solid var(--steel2); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); }
+.playbook-card img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: top; background: #fff; border-bottom: 1px solid var(--steel2); }
+.playbook-card-body { padding: 22px; }
+.playbook-card-body h3 { font-size: 1.25rem; margin-bottom: 8px; }
+.playbook-card-body p { color: var(--mist); font-size: .84rem; line-height: 1.65; min-height: 56px; }
+.playbook-card-body a { display: inline-flex; margin-top: 16px; color: var(--gold2); font-weight: 700; font-size: .84rem; }
+.playbook-card-body a:hover { color: var(--gold3); }
+.founding-playbooks-promo { padding: 72px 0; background: radial-gradient(circle at 20% 50%,rgba(212,160,23,.09),transparent 40%),var(--forge2); border-bottom: 1px solid var(--steel2); }
+.founding-playbooks-promo-inner { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 40px; align-items: center; }
+.founding-playbooks-promo h2 { max-width: 720px; }
+.founding-playbooks-promo p { color: var(--mist); line-height: 1.7; max-width: 760px; margin-top: 14px; }
+
+@media (max-width: 900px) {
+  .playbooks-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+  .founding-playbooks-promo-inner { grid-template-columns: 1fr; }
+  .founding-playbooks-promo-inner .btn { justify-self: start; }
+}
+
+@media (max-width: 560px) {
+  .playbooks-hero { padding: calc(var(--nav-h) + 54px) 0 58px; }
+  .playbooks-hero .display-xl { font-size: clamp(2.4rem,12vw,3.4rem); }
+  .playbooks-hero .btn, .founding-playbooks-promo-inner .btn { width: 100%; justify-content: center; white-space: normal; text-align: center; }
+  .playbooks-section { padding: 68px 0; }
+  .playbooks-grid { grid-template-columns: 1fr; gap: 20px; }
+  .playbook-card img { aspect-ratio: 3 / 4; }
+  .playbook-card-body p { min-height: 0; }
+}

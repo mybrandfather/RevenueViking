@@ -236,7 +236,7 @@ document.querySelectorAll('.demo-form').forEach(form => {
 });
 
 // Preserve paid-campaign attribution in the founding-client application.
-window.addEventListener('DOMContentLoaded', () => {
+function captureFoundingClientAttribution() {
   const form = document.querySelector('.founding-client-form');
   if (!form) return;
   const params = new URLSearchParams(window.location.search);
@@ -249,9 +249,10 @@ window.addEventListener('DOMContentLoaded', () => {
   };
   Object.entries(attribution).forEach(([fieldName, queryName]) => {
     const input = form.elements.namedItem(fieldName);
-    if (input instanceof HTMLInputElement) input.value = (params.get(queryName) || '').slice(0, 200);
+    if (input?.tagName === 'INPUT') input.value = (params.get(queryName) || '').slice(0, 200);
   });
-});
+}
+captureFoundingClientAttribution();
 
 // Add the business email once to each footer without crowding page CTAs.
 window.addEventListener('DOMContentLoaded', () => {
