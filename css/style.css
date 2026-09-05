@@ -1857,13 +1857,16 @@ button:disabled { cursor: wait; opacity: 0.68; }
 .playbooks-hero p { max-width: 760px; margin: 20px auto 30px; color: var(--mist); line-height: 1.75; }
 .playbooks-section { padding: 96px 0; }
 .playbooks-section .section-heading { max-width: 760px; }
-.playbooks-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px; }
-.playbook-card { overflow: hidden; background: var(--forge2); border: 1px solid var(--steel2); border-radius: var(--radius-lg); box-shadow: var(--shadow-md); }
-.playbook-card img { display: block; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: top; background: #fff; border-bottom: 1px solid var(--steel2); }
-.playbook-card-body { padding: 22px; }
+.playbooks-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 26px; }
+.playbook-card { display: flex; flex-direction: column; overflow: hidden; background: linear-gradient(180deg,rgba(25,31,42,.98),rgba(14,18,25,.98)); border: 1px solid rgba(212,160,23,.22); border-radius: var(--radius-lg); box-shadow: 0 20px 50px rgba(0,0,0,.26); transition: transform .22s ease,border-color .22s ease,box-shadow .22s ease; }
+.playbook-card:hover { transform: translateY(-5px); border-color: rgba(212,160,23,.55); box-shadow: 0 26px 64px rgba(0,0,0,.36); }
+.playbook-cover { display: block; overflow: hidden; background: #fff; border-bottom: 1px solid rgba(212,160,23,.28); }
+.playbook-cover img { display: block; width: 100%; height: auto; aspect-ratio: 1000 / 609; object-fit: contain; background: #fff; transition: transform .28s ease; }
+.playbook-card:hover .playbook-cover img { transform: scale(1.015); }
+.playbook-card-body { display: flex; flex: 1; flex-direction: column; padding: 22px; }
 .playbook-card-body h3 { font-size: 1.25rem; margin-bottom: 8px; }
 .playbook-card-body p { color: var(--mist); font-size: .84rem; line-height: 1.65; min-height: 56px; }
-.playbook-card-body a { display: inline-flex; margin-top: 16px; color: var(--gold2); font-weight: 700; font-size: .84rem; }
+.playbook-card-body a { display: inline-flex; align-items: center; justify-content: space-between; gap: 14px; margin-top: auto; padding-top: 18px; color: var(--gold2); font-weight: 700; font-size: .84rem; }
 .playbook-card-body a:hover { color: var(--gold3); }
 .founding-playbooks-promo { padding: 72px 0; background: radial-gradient(circle at 20% 50%,rgba(212,160,23,.09),transparent 40%),var(--forge2); border-bottom: 1px solid var(--steel2); }
 .founding-playbooks-promo-inner { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 40px; align-items: center; }
@@ -1882,6 +1885,12 @@ button:disabled { cursor: wait; opacity: 0.68; }
   .playbooks-hero .btn, .founding-playbooks-promo-inner .btn { width: 100%; justify-content: center; white-space: normal; text-align: center; }
   .playbooks-section { padding: 68px 0; }
   .playbooks-grid { grid-template-columns: 1fr; gap: 20px; }
-  .playbook-card img { aspect-ratio: 3 / 4; }
+  .playbook-card { border-radius: 18px; }
+  .playbook-cover img { aspect-ratio: 1000 / 609; }
   .playbook-card-body p { min-height: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .playbook-card, .playbook-cover img { transition: none; }
+  .playbook-card:hover, .playbook-card:hover .playbook-cover img { transform: none; }
 }
